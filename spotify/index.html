@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ironhack Spotify Search</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<style type="text/css">
+		img {
+			height: 300px;
+		}
+	</style>
+</head>
+<body>
+
+<form id="search-form">
+    <label for="search">Search: <input type="text" name="search" id="search-query"></label>
+    <button class="js-submit" type="submit">SUBMIT</button>
+  </form>
+
+<div class="container">
+	<ol class="result-list-group">
+		
+	</ol>
+</div>
+
+<script>
+
+$('.js-submit').on('click', searchArtists);
+
+function searchArtists(event){
+	event.preventDefault();
+	var query = $('input#search-query').val()
+	var request = $.get('https://api.spotify.com/v1/search', {
+	"type": "artist", "query": query, "limit": "5"}, loadArtists);
+}
+
+function loadArtists(response){
+	$('.result-list-group').empty();
+	console.log(response);
+	var searchResult = response.artists.items;
+		for(var i = 0; i < searchResult.length; i ++){
+			var image;
+			if (searchResult[i].images.length == 0) {
+				image = "http://img3.wikia.nocookie.net/__cb20120826123355/vssaxtonhale/images/c/c2/Troll-face.png"
+			} else {
+				image = searchResult[i].images[0].url
+			}
+
+			var name = searchResult[i].name
+
+			console.log(name);
+			listItem = $('<li></li>');
+			listItem.html('<p>' + name + '</p><img src="' + image + '">');
+			$('.result-list-group').append(listItem);
+		}
+}
+
+function fetchTracks(){
+	var query = $('input#search-query').val()
+	var request = $.get('https://api.spotify.com/v1/search', {
+	"type": "album", "query": query, "limit": "1"}, loadTracks);
+}
+
+
+function loadTracks(response){
+	console.log(response)
+}
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+  <head>
+    <title>Ironhack Characters</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  </head>
+<body>
+
+<h1 class="complex-heading">
+    HTTP Requests in JavaScript
+    <span>a.k.a. AJAX</span>
+  </h1>
+
+  <form>
+  <!-- Add the form fields for Name, Occupation, and Weapon -->
+    <label for="name">Name: <input type="text" name="name" id="input-name"></label>
+    <label for="occupation">Occupation: <input type="text" name="occupation" id="input-occupation"></label>
+    <label for="weapon">Weapon: <input type="text" name="weapon" id="input-weapon"></label>
+
+    <button class="js-submit" type="submit">SUBMIT</button>
+  </form>
+  <br>
+  <button class="js-characters">Fetch characters</button>
+
+  <ul class="js-character-list"></ul>
+
+
+</body>
+
+<script>
+  function onSubmit (event) {
+  event.preventDefault();
+  console.debug('SUBMITTED');
+  var newCharacter = {
+  // Build a new character from the values in the form
+    name: $('input#input-name').val(),
+    occupation: $('input#input-occupation').val(),
+    weapon: $('input#input-weapon').val()
+  }
+
+  // Send a post request with the data for the new character
+  var request = $.post('https://ironhack-characters.herokuapp.com/characters', newCharacter);
+
+  function onSaveSuccess (response) {
+    console.log('BOOM', response);
+  }
+
+  function onSaveFailure (err) {
+    console.error(err.responseJSON);
+  }
+
+  request.done(onSaveSuccess);
+  request.fail(onSaveFailure);
+}
+
+$('.js-submit').on('click', onSubmit);
+
+
+function fetchCharacters () {
+  var request = $.get('https://ironhack-characters.herokuapp.com/characters');
+
+  function handleCharacters (characters) {
+    // what is the response from the get request?
+    // write a function to process the response 
+    // it should loop through each character in the response
+    // create the DOM element with HTML to describe each character
+    // append to the list $('.js-character-list')
+
+    function logCharacters(character, index, array){
+      var item = $('<li></li>');
+      item.html('<span style="font-size:20px;"><b>Name:</b> ' + character.name + '</span><br/><b>Occupation:</b> ' + character.occupation + '<br/><b>Weapon:</b> ' + character.weapon)
+      $('.js-character-list').append(item);
+    }
+
+    characters.forEach(logCharacters);
+    }
+
+    function handleError (err1, err2, err3) {
+      console.error('OH NO!!', err1, err2, err3);
+    }
+
+    request.done(handleCharacters);
+    request.fail(handleError);
+  }
+
+$('.js-characters').on('click', fetchCharacters);
+
+
+</script>
+
+</html>
+
+
+

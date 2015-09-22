@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Device Orientation</title>
+	<style>
+		div{
+			display: inline-block;
+		}
+	</style>
+</head>
+<body>
+	<h2>Current Latitude:</h2>
+	<p id="latitude"></p>
+	<h2>Current Longitude:</h2>
+	<p id="longitude"></p>
+	<div id="image"><h1>Target</h1></div>
+
+
+
+<script>
+	var options = {
+	  enableHighAccuracy: true,
+	  timeout: 5000,
+	  maximumAge: 0
+	};
+	
+	function onWatch(pos) {
+	  var coordinates = pos.coords;
+	  
+	  document.getElementById('latitude').innerHTML = coordinates.latitude;
+	  document.getElementById('longitude').innerHTML = coordinates.longitude;
+
+	  document.getElementById('image').innerHTML = '<img src="https://maps.googleapis.com/maps/api/staticmap?center='+coordinates.latitude+','+coordinates.longitude+'&zoom=16&size=300x300\
+			 &markers=color:blue%7Clabel:S%7C'+coordinates.latitude+','+coordinates.longitude+'&markers=color:red%7Clabel:S%7C40.4382379,-3.6811461" />';
+
+
+	  //console.log('Your current position is:');
+	  //console.log('Latitude : ' + coordinates.latitude);
+	  //console.log('Longitude: ' + coordinates.longitude);
+	  //console.log('More or less ' + coordinates.accuracy + ' meters.');
+	};
+
+	
+	function error(err) {
+	  console.warn('ERROR(' + err.code + '): ' + err.message);
+	};
+	
+	navigator.geolocation.watchPosition(onWatch, error, options);
+
+
+</script>
+
+</body>
+</html>

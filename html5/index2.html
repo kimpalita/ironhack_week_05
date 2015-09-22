@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Get Current Location</title>
+</head>
+<body>
+	<h2>Latitude:</h2>
+	<p id="latitude"></p>
+	<h2>Longitude:</h2>
+	<p id="longitude"></p>
+	<div id="image"></div>
+
+
+
+<script>
+	var options = {
+	  enableHighAccuracy: true,
+	  timeout: 5000,
+	  maximumAge: 0
+	};
+	
+	function success(pos) {
+	  var coordinates = pos.coords;
+	  
+	  document.getElementById('latitude').innerHTML = coordinates.latitude;
+	  document.getElementById('longitude').innerHTML = coordinates.longitude;
+
+	  document.getElementById('image').innerHTML = '<img src="https://maps.googleapis.com/maps/api/staticmap?center='+coordinates.latitude+','+coordinates.longitude+'&zoom=14&size=600x600">';
+
+
+	  //console.log('Your current position is:');
+	  //console.log('Latitude : ' + coordinates.latitude);
+	  //console.log('Longitude: ' + coordinates.longitude);
+	  //console.log('More or less ' + coordinates.accuracy + ' meters.');
+	};
+	
+	function error(err) {
+	  console.warn('ERROR(' + err.code + '): ' + err.message);
+	};
+	
+	navigator.geolocation.getCurrentPosition(success, error, options);
+
+</script>
+
+</body>
+</html>

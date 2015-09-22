@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Device Orientation</title>
+</head>
+<body>
+	<ul>
+  <li id='alpha'></li>
+  <li id='beta'></li>
+  <li id='gamma'></li>
+</ul>
+<img src="http://ironhack.com/images-ironhack/logo-ironhack-course.png" id="ironhack">
+
+
+
+<script>
+	window.addEventListener('deviceorientation', onChange);
+
+
+	function onChange(eventData) {
+		 var tiltLR = eventData.gamma; 
+		 var tiltFB = eventData.beta; 
+		 var dir = eventData.alpha; 
+		 // now do something with this data
+	}
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place searches</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body, #map-canvas {
+        height: 600px;
+        width: 600px;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+    <script>
+var map;
+var infowindow;
+
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+  };
+
+function initialize() {
+  navigator.geolocation.getCurrentPosition(onLocation, error, options);
+
+  function onLocation(pos){
+
+    mylocation = new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
+
+    map = new google.maps.Map(document.getElementById('map-canvas'), {
+      center: mylocation,
+      zoom: 15
+    });
+
+    var marker = new google.maps.Marker({
+      position: mylocation,
+      map: map,
+      title: 'You are here!',
+      icon: 'http://www.veryicon.com/icon/48/Internet%20%26%20Web/Web%202/star.png'
+    });
+
+    var request = {
+      location: mylocation,
+      radius: 1000,
+      types: ['movie_theater']
+    };
+    infowindow = new google.maps.InfoWindow();
+    var service = new google.maps.places.PlacesService(map);
+    service.nearbySearch(request, callback);
+  };
+
+}
+
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      console.log(results[i]);
+      createMarker(results[i]);
+
+      findNearest(results[i]); //calculate Nearest position
+    }
+  }
+}
+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+function error(err) {
+    console.warn('ERROR(' + err.code + '): ' + err.message);
+  };
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+    <button type="submit" id="calculate">Find Nearest</button>
+  </body>
+</html>

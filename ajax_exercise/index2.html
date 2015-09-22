@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Another AJAX Exercise</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="result"></div>
+
+<script>
+
+	var total = 0;
+	var count = 0;
+
+	for(var i = 1; i <= 5; i++){
+		request = $.get('http://stats.mediasmart.es/bulk/test-2014/account-0' + i + '.json', sumTotal);
+	}
+
+	function sumTotal(result){
+		total += result.Debt;
+		count += 1;
+		console.log(total);
+		if(count === 5){
+			$('.result').html(total);
+		};
+	}	
+
+</script>
+
+</body>
+
+
+</html>
